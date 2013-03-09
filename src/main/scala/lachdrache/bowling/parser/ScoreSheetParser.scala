@@ -2,10 +2,15 @@ package lachdrache.bowling.parser
 
 import util.parsing.combinator.RegexParsers
 
-class BoardParser(frameCnt: Int) extends RegexParsers {
+/**
+ * Parses a [[https://en.wikipedia.org/wiki/File:Bowlstrike.PNG Bowling score sheet]]
+ *
+ * The score sheet is a string as described at http://www.codingdojo.org/cgi-bin/wiki.pl?KataBowling
+ */
+class ScoreSheetParser(frameCnt: Int) extends RegexParsers {
 
-  def board: Parser[Board] = repN(frameCnt, frame)~bonus ^^ {
-    case frames~bonus => Board(frames, bonus)
+  def sheet: Parser[ScoreSheet] = repN(frameCnt, frame)~bonus ^^ {
+    case frames~bonus => ScoreSheet(frames, bonus)
   }
 
   def frame: Parser[Frame] = strike | spare | incomplete
@@ -37,15 +42,15 @@ class BoardParser(frameCnt: Int) extends RegexParsers {
     10
   }
 
-  def apply(in: String): Board = parseAll(board, in) match {
+  def apply(in: String): ScoreSheet = parseAll(sheet, in) match {
     case Success(result, _) => result
     case NoSuccess(msg, _) => throw new IllegalArgumentException(s"Parsing error: $msg")
   }
 }
 
-object BoardParser {
+object ScoreSheetParser {
   def apply(in: String, frameCnt: Int) = {
-    val parser = new BoardParser(frameCnt)
+    val parser = new ScoreSheetParser(frameCnt)
     parser(in)
   }
 }
