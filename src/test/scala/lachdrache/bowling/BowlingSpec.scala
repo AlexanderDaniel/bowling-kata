@@ -62,8 +62,8 @@ class BowlingSpec extends Specification {
     }
   }
 
-  "game with 10 frames (12 rolls: 12 strikes)" should {
-    "return max score 300 for XXXXXXXXXXXX" in {
+  "game with 10 frames" should {
+    "return max score 300 for XXXXXXXXXXXX (12 rolls: 12 strikes)" in {
       scoreOf("XXXXXXXXXXXX") === 300
     }
     "return 90 for 9-9-9-9-9-9-9-9-9-9- (20 rolls: 10 pairs of 9 and miss)" in {
