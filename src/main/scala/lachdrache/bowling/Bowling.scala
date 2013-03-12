@@ -32,7 +32,7 @@ object Bowling {
   def charToScore(c :Char): Int = c match {
     case '-' => 0
     case 'X' => 10
-    case c1 if '0'<=c1 && c1<='9' => c1-'0'
+    case d if '0'<=d && d<='9' => d-'0'
     case _ => throw new IllegalArgumentException
   }
 
