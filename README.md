@@ -13,3 +13,6 @@ case class ScoreSheet with a list of frames and a bonus list.
 calculate the total score.
 
 [specs2](http://etorreborre.github.com/specs2/) unit tests are available for all classes.
+
+For a different solution in Scala you can look at the [BowlingScoreCalculator](https://github.com/sebnozzi/coding-katas/blob/master/src/main/scala/sebnozzi/katas/bowling/BowlingScoreCalculator.scala)
+of [Sebastian Nozzi](https://github.com/sebnozzi).
