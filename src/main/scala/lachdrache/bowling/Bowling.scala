@@ -8,22 +8,21 @@ package lachdrache.bowling
  * I implemented this solution after doing the kata at the Vienna Scala User Group http://meetup.scala-vienna.org/events/105141312/
  *
  * Normally a bowling game consists of 10 frames. But {{{scoreOf}}} can compute the result for a bowling game of any
- * number of frames. It sees if there is no more input available and stops. This also eases unit testing because one
- * can test for a game with 1 or 2 frames.
+ * number of frames which eases unit testing.
  */
 object Bowling {
 
-  def scoreOf(board: String): Int = {
-    val (scoreOfRolls, rest) = consumeFrame(board)
-    val (scoreOfBonusRolls, restOfBonusRolls) = consumeRolls(rest, bonusRolls(scoreOfRolls))
-    val scoreOfFrame = scoreOfRolls.sum + scoreOfBonusRolls.sum
-    restOfBonusRolls match {
-      case "" => scoreOfFrame
-      case _ => scoreOfFrame + scoreOf(rest)
+  def scoreOf(frameCnt: Int)(scoreSheet: String): Int = frameCnt match {
+    case 0 => 0
+    case _ => {
+      val (scoreOfRolls, rest) = consumeFrame(scoreSheet)
+      val scoreOfBonusRolls = bonusRolls(rest, noOfBonusRolls(scoreOfRolls))
+      val scoreOfFrame = scoreOfRolls.sum + scoreOfBonusRolls.sum
+      scoreOfFrame + scoreOf(frameCnt-1)(rest)
     }
   }
 
-  def bonusRolls(scoreOfRolls: List[Int]): Int = scoreOfRolls match {
+  def noOfBonusRolls(scoreOfRolls: List[Int]): Int = scoreOfRolls match {
     case 10 :: Nil => 2
     case n1 :: n2 :: Nil if n1+n2==10 => 1
     case _ => 0
@@ -36,16 +35,16 @@ object Bowling {
     case _ => throw new IllegalArgumentException
   }
 
-  /** @return the bonus rolls as ints and the rest of the board */
-  def consumeRolls(board: String, count: Int): (List[Int], String) = count match {
-    case 0 => (List(), board)
-    case 1 => (List(charToScore(board.head)), board.tail)
+  /** @return the bonus rolls as ints */
+  def bonusRolls(board: String, count: Int): List[Int] = count match {
+    case 0 => List()
+    case 1 => List(charToScore(board.head))
     case 2 => consumeFrame(board) match {
       case (List(10), rest) => {
-        val (secondBonus, restOfRest) = consumeRolls(rest, 1)
-        (10 :: secondBonus, restOfRest)
+        val secondBonus = bonusRolls(rest, 1)
+        10 :: secondBonus
       }
-      case tuple => tuple
+      case (frame, _) => frame
     }
     case _ => throw new IllegalArgumentException
   }

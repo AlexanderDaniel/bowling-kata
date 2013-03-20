@@ -6,6 +6,8 @@ import Bowling._
 class BowlingSpec extends Specification {
 
   "game with 1 frame without strikes and spares" should {
+    def scoreOf(sheet: String) = Bowling.scoreOf(1)(sheet)
+
     "return score 3 for 21" in {
       scoreOf("21") === 3
     }
@@ -21,6 +23,8 @@ class BowlingSpec extends Specification {
   }
 
   "game with 1 frame with spares (one bonus roll)" should {
+    def scoreOf(sheet: String) = Bowling.scoreOf(1)(sheet)
+
     "return score 11 for 7/1" in {
       scoreOf("7/1") === 11
     }
@@ -33,6 +37,8 @@ class BowlingSpec extends Specification {
   }
 
   "game with 1 frame with strike (two bonus rolls)" should {
+    def scoreOf(sheet: String) = Bowling.scoreOf(1)(sheet)
+
     "return score 12 for X11" in {
       scoreOf("X11") === 12
     }
@@ -48,6 +54,8 @@ class BowlingSpec extends Specification {
   }
 
   "game with 2 frames" should {
+    def scoreOf(sheet: String) = Bowling.scoreOf(2)(sheet)
+
     "return score 14 for 3443" in {
       scoreOf("3443") === 14
     }
@@ -60,9 +68,14 @@ class BowlingSpec extends Specification {
     "return score 43=23+20 for XX3/" in {
       scoreOf("XX3/") === 43
     }
+    "return score 14=12+2 for X11" in {
+      scoreOf("X11") === 14
+    }
   }
 
   "game with 10 frames" should {
+    def scoreOf(sheet: String) = Bowling.scoreOf(10)(sheet)
+
     "return max score 300 for XXXXXXXXXXXX (12 rolls: 12 strikes)" in {
       scoreOf("XXXXXXXXXXXX") === 300
     }
